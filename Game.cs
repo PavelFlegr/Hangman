@@ -27,7 +27,7 @@ namespace Hangman
 
         public Status Next(char c)
         {
-            _word.CheckChar(c);
+            CheckInput(c);
             return CheckStatus();
         }
 
@@ -35,6 +35,7 @@ namespace Hangman
         {
             if (!_word.CheckChar(c))
                 Lives--;
+
         }
 
         Status CheckStatus()

@@ -11,7 +11,13 @@ namespace Hangman
         static Game g;
         static void Main(string[] Args)
         {
-            g = new Game("test");
+            StartGame("test");
+            Console.ReadKey(true);
+        }
+
+        static void StartGame(string word)
+        {
+            g = new Game(word);
             Status status;
             Redraw();
             do
