@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hangman;
 
 namespace Hangman
 {
@@ -11,11 +12,37 @@ namespace Hangman
         static Game g;
         static void Main(string[] Args)
         {
-            StartGame("test");
+            var words = new List<string> { "jablko", "kostlivec", "zamek", "voda" };
+            foreach(string word in words)
+            {
+                switch (StartGame(word))
+                {
+                    case Status.loss:
+                        {
+                            Console.WriteLine("You lost");
+                            Console.ReadKey();
+                            return;
+                        }
+
+                    case Status.win:
+                        {
+                            Console.WriteLine("You won");
+                            Console.ReadKey();
+                            break;
+                        }
+                    default:
+                        {
+                            Console.WriteLine("Something went wrong");
+                            Console.ReadKey();
+                            return;
+                        }
+                }
+                
+            }
             Console.ReadKey(true);
         }
 
-        static void StartGame(string word)
+        static Status StartGame(string word)
         {
             g = new Game(word);
             Status status;
@@ -25,6 +52,8 @@ namespace Hangman
                 status = g.Next(GetInput());
                 Redraw();
             } while (status == Status.neutral);
+
+            return status;
         }
 
         static char GetInput()
@@ -36,7 +65,15 @@ namespace Hangman
         {
             Console.Clear();
             Console.WriteLine("Life: {0}", g.Lives);
-            Console.WriteLine(g.Word);
+            Console.WriteLine(FormatWord(g.Word));
+        }
+
+        static string FormatWord(string word)
+        {
+            var sb = new StringBuilder();
+            foreach (char c in word)
+                sb.AppendFormat(" {0} ", c);
+            return sb.ToString();
         }
     }
 }

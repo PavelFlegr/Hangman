@@ -34,6 +34,30 @@ namespace Hangman
         {
             this.word = word;
             _known = new char[this.word.Length];
+            var random = new Random();
+            int helpAmount = word.Length / 3;
+            int i = 0;
+            while (i < helpAmount)
+            {
+                int index = random.Next(word.Length);
+                if (_known[index] == default(char))
+                {
+                    char c = word[index];
+                    var charIndices = new List<int>();
+                    for(int j = 0; j < word.Length; j++)
+                    {
+                        if(word[j] == c)
+                        {
+                            charIndices.Add(j);
+                        }
+                    }
+                    foreach(int j in charIndices)
+                    {
+                        _known[j] = word[j];
+                        i++;
+                    }
+                }
+            }
         }
 
         public bool CheckChar(char character)
